@@ -1,8 +1,10 @@
-const Router = require('koa-router'),
-router = new Router();
-const {root, forbidden} = require('./route')
+const Router = require('koa-router');
+const common = require('../controllers/common');
 
-router.get('/', root)
-router.get('*', forbidden)
 
-module.exports = router
+const router = new Router();
+
+
+router.get('/', common.root);
+
+module.exports = router;
