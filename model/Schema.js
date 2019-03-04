@@ -22,7 +22,8 @@ const sequelize = new Sequelize('oskartestdb', 'root', 'root', {
 const User = sequelize.define('oskaruserdata', {
   username: Sequelize.STRING,
   email: Sequelize.STRING,
-//   date: Sequelize.DATE,
+  password: Sequelize.STRING,
+  date: Sequelize.DATE,
 });
 
 const PredictArray = sequelize.define('oskarpredict', {
