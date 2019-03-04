@@ -18,7 +18,7 @@ const findById = async (ctx) => {
 
 const addUser = async (ctx) => {
   console.log(ctx.request.body);
-  ctx.response.status = 200;
+  ctx.status = 200;
 };
 
 module.exports = {

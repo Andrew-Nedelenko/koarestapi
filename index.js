@@ -8,24 +8,22 @@ const router = require('./routes/routes');
 const app = new Koa();
 
 
-app.use(router.routes())
-  .use(router.allowedMethods())
-  .use(helmet())
+app.use(helmet())
   .use(cors())
-  .use(bodyParser());
-
-
-app.use(async (ctx, next) => {
-  await next();
-  const rt = ctx.response.get('X-Responce-Time');
-  global.console.log(`${ctx.method} ${ctx.url} - ${rt}`);
-});
-app.use(async (ctx, next) => {
-  const start = Date.now();
-  await next();
-  const ms = Date.now() - start;
-  ctx.set('X-Responce-Time', `${ms}ms`);
-});
+  .use(bodyParser())
+  .use(router.routes())
+  .use(router.allowedMethods())
+  .use(async (ctx, next) => {
+    await next();
+    const rt = ctx.response.get('X-Responce-Time');
+    global.console.log(`${ctx.method} ${ctx.url} - ${rt}`);
+  })
+  .use(async (ctx, next) => {
+    const start = Date.now();
+    await next();
+    const ms = Date.now() - start;
+    ctx.set('X-Responce-Time', `${ms}ms`);
+  });
 
 
 const port = process.env.PORT || 2800;
