@@ -1,4 +1,4 @@
-const { PredictArray } = require('../model/Schema');
+const { PredictArray, User } = require('../model/Schema');
 
 const root = async (ctx) => {
   const table = await PredictArray.findAll({
@@ -13,10 +13,23 @@ const findById = async (ctx) => {
       id: ctx.params.id,
     },
   });
-  ctx.body = table;
+  if (table) {
+    ctx.body = table;
+    ctx.status = 200;
+  } else {
+    ctx.status = 404;
+    ctx.message = 'not found...';
+  }
+};
+
+const getUsers = async (ctx) => {
+  const users = await User.findAll({
+    limit: 200,
+  });
+  ctx.body = users;
 };
 
 
 module.exports = {
-  root, findById,
+  root, findById, getUsers,
 };
