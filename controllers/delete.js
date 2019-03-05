@@ -1,7 +1,6 @@
 const { User } = require('../model/Schema');
 
 const userDelete = async (ctx) => {
-  console.log(ctx.request.body);
   const { email } = ctx.request.body;
   const candidate = await User.findOne({
     where: {
