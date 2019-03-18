@@ -1,5 +1,5 @@
 {
-  "name": "koacms",
+  "name": "koarest",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -16,18 +16,18 @@
     "bcryptjs": "^2.4.3",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
-    "koa-helmet": "^4.0.0",
+    "koa-helmet": "^4.1.0",
     "koa-logger": "^3.2.0",
     "koa-router": "^7.4.0",
     "mysql2": "^1.6.5",
     "sequelize": "^4.43.0"
   },
   "devDependencies": {
-    "eslint": "^5.15.0",
+    "eslint": "^5.15.2",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-jest": "^22.3.0",
-    "jest": "^24.1.0",
+    "eslint-plugin-jest": "^22.4.1",
+    "jest": "^24.5.0",
     "nodemon": "^1.18.10",
     "supertest": "^3.4.2"
   }
