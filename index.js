@@ -3,11 +3,14 @@ const helmet = require('koa-helmet');
 const cors = require('@koa/cors');
 const bodyParser = require('koa-bodyparser');
 const logger = require('koa-logger');
+const KeyGrip = require('keygrip');
 const router = require('./routes/routes');
 
 
 const app = new Koa();
 
+app.keys = ['secret key', 'secret key'];
+app.keys = new KeyGrip(['secret key', 'secret key'], 'sha256');
 
 app.use(helmet())
   .use(cors())

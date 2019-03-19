@@ -13,7 +13,9 @@
   "license": "ISC",
   "dependencies": {
     "@koa/cors": "^2.2.3",
+    "async-redis": "^1.1.7",
     "bcryptjs": "^2.4.3",
+    "keygrip": "^1.0.3",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-helmet": "^4.1.0",

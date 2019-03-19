@@ -26,6 +26,7 @@ const getUsers = async (ctx) => {
   const users = await User.findAll({
     limit: 200,
   });
+  ctx.status = 200;
   ctx.body = users;
 };
 

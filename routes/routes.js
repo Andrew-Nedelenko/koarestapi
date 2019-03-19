@@ -4,16 +4,17 @@ const auth = require('../controllers/auth');
 const login = require('../controllers/login');
 const deleteUser = require('../controllers/delete');
 const up = require('../controllers/update');
+const { checkToken } = require('../middleware/users');
 
 const router = new Router();
 
 
-router.get('/', common.root);
-router.get('/films/:id', common.findById);
-router.get('/users', common.getUsers);
+router.get('/', checkToken, common.root);
+router.get('/films/:id', checkToken, common.findById);
+router.get('/users', checkToken, common.getUsers);
 router.post('/reg', auth.addUser);
 router.post('/login', login.userLogin);
-router.put('/update/username', up.userUpdate);
-router.delete('/del', deleteUser.userDelete);
+router.put('/update/username', checkToken, up.userUpdate);
+router.delete('/del', checkToken, deleteUser.userDelete);
 
 module.exports = router;
