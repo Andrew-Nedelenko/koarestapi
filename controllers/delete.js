@@ -9,10 +9,8 @@ const userDelete = async (ctx) => {
   });
   if (candidate) {
     await candidate.destroy();
-    ctx.status = 200;
     ctx.message = 'user has been removed...';
   } else {
-    ctx.status = 404;
     ctx.message = 'user not found';
   }
 };

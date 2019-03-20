@@ -13,7 +13,7 @@ const router = new Router();
 router.get('/', checkToken, common.root);
 router.get('/films/:id', checkToken, common.findById);
 router.get('/users', checkToken, common.getUsers);
-router.get('/profile/:id', userProfile);
+router.get('/profile', checkToken, userProfile);
 router.post('/reg', auth.addUser);
 router.post('/login', login.userLogin);
 router.put('/update/username', checkToken, up.userUpdate);

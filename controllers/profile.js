@@ -1,11 +1,10 @@
 const { User } = require('../model/Schema');
 
 const userProfile = async (ctx) => {
-  const { id } = ctx.params;
-  console.log(ctx.params.id);
+  const uid = ctx.cookies.get('usid');
   const candidate = await User.findOne({
     where: {
-      id,
+      username: uid,
     },
   });
   ctx.body = candidate;

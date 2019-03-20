@@ -6,10 +6,28 @@ const addUser = async (ctx) => {
   const errors = {};
   if (!String(username).trim()) {
     errors.username = 'username is require';
+  } else {
+    const candidate = await User.findOne({
+      where: {
+        username,
+      },
+    });
+    if (candidate) {
+      errors.username = 'user already exist';
+    }
   }
 
   if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(String(email))) {
     errors.email = 'Email is not valid';
+  } else {
+    const emailCandidate = await User.findOne({
+      where: {
+        email,
+      },
+    });
+    if (emailCandidate) {
+      errors.username = 'email already exist';
+    }
   }
 
   if (!String(password).trim()) {
@@ -21,23 +39,13 @@ const addUser = async (ctx) => {
   } else {
     const salt = bcrypt.genSaltSync(10);
     const bPass = bcrypt.hashSync(password, salt);
-    const candidate = await User.findOne({
-      where: {
-        username,
-        email,
-      },
+    await User.create({
+      username,
+      email: email.toLowerCase(),
+      password: bPass,
+      date: Date.now(),
     });
-    if (candidate) {
-      ctx.message = 'user already exist';
-    } else {
-      await User.create({
-        username,
-        email: email.toLowerCase(),
-        password: bPass,
-        date: Date.now(),
-      });
-      ctx.message = 'user created';
-    }
+    ctx.message = 'user created';
   }
 };
 
