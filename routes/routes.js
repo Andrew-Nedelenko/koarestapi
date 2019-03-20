@@ -4,6 +4,7 @@ const auth = require('../controllers/auth');
 const login = require('../controllers/login');
 const deleteUser = require('../controllers/delete');
 const up = require('../controllers/update');
+const logout = require('../controllers/logout');
 const { userProfile } = require('../controllers/profile');
 const { checkToken } = require('../middleware/users');
 
@@ -14,6 +15,7 @@ router.get('/', checkToken, common.root);
 router.get('/films/:id', checkToken, common.findById);
 router.get('/users', checkToken, common.getUsers);
 router.get('/profile', checkToken, userProfile);
+router.post('/logout', checkToken, logout);
 router.post('/reg', auth.addUser);
 router.post('/login', login.userLogin);
 router.put('/update/username', checkToken, up.userUpdate);
