@@ -14,7 +14,6 @@ const userUpdate = async (ctx) => {
           email,
         },
       });
-    ctx.status = 200;
     ctx.message = 'username updated';
   } else {
     ctx.status = 404;

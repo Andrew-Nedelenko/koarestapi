@@ -15,9 +15,7 @@ const findById = async (ctx) => {
   });
   if (table) {
     ctx.body = table;
-    ctx.status = 200;
   } else {
-    ctx.status = 404;
     ctx.message = 'not found...';
   }
 };
@@ -26,7 +24,6 @@ const getUsers = async (ctx) => {
   const users = await User.findAll({
     limit: 200,
   });
-  ctx.status = 200;
   ctx.body = users;
 };
 

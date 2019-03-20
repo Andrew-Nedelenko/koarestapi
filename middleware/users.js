@@ -8,7 +8,7 @@ const checkToken = async (ctx, next) => {
     if (token === value) {
       return next();
     }
-    ctx.status = 403;
+    ctx.status = 401;
     return 0;
   }
   ctx.status = 401;

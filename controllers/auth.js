@@ -3,25 +3,41 @@ const { User } = require('../model/Schema');
 
 const addUser = async (ctx) => {
   const { username, email, password } = ctx.request.body;
-  const salt = bcrypt.genSaltSync(10);
-  const bPass = bcrypt.hashSync(password, salt);
-  const candidate = await User.findOne({
-    where: {
-      email,
-    },
-  });
-  if (candidate) {
-    ctx.status = 409;
-    ctx.message = 'email already exist';
+  const errors = {};
+  if (!String(username).trim()) {
+    errors.username = 'username is require';
+  }
+
+  if (!(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(String(email))) {
+    errors.email = 'Email is not valid';
+  }
+
+  if (!String(password).trim()) {
+    errors.password = 'password is required';
+  }
+
+  if (Object.keys(errors).length) {
+    ctx.body = errors;
   } else {
-    await User.create({
-      username,
-      email: email.toLowerCase(),
-      password: bPass,
-      date: Date.now(),
+    const salt = bcrypt.genSaltSync(10);
+    const bPass = bcrypt.hashSync(password, salt);
+    const candidate = await User.findOne({
+      where: {
+        username,
+        email,
+      },
     });
-    ctx.status = 201;
-    ctx.message = 'user created';
+    if (candidate) {
+      ctx.message = 'user already exist';
+    } else {
+      await User.create({
+        username,
+        email: email.toLowerCase(),
+        password: bPass,
+        date: Date.now(),
+      });
+      ctx.message = 'user created';
+    }
   }
 };
 

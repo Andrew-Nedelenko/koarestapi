@@ -2,8 +2,8 @@ const asyncRedis = require('async-redis');
 
 const client = asyncRedis.createClient();
 
-client.on('error', (err) => {
-  console.log(`Error ${err}`);
+client.on('error', () => {
+  throw new Error();
 });
 
 module.exports = {
