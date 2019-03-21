@@ -35,6 +35,7 @@ const addUser = async (ctx) => {
   }
 
   if (Object.keys(errors).length) {
+    ctx.status = 404;
     ctx.body = errors;
   } else {
     const salt = bcrypt.genSaltSync(10);
@@ -45,7 +46,10 @@ const addUser = async (ctx) => {
       password: bPass,
       date: Date.now(),
     });
-    ctx.message = 'user created';
+    ctx.status = 200;
+    ctx.body = {
+      message: 'user created',
+    };
   }
 };
 

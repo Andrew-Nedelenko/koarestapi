@@ -8,11 +8,15 @@ const logout = async (ctx) => {
   }
   const candidate = await client.del(username);
   if (candidate) {
+    ctx.status = 200;
     ctx.body = {
       message: 'you are login off',
     };
   } else {
-    ctx.message = 'user not found';
+    ctx.status = 400;
+    ctx.body = {
+      message: 'user not found',
+    };
   }
   return 0;
 };
