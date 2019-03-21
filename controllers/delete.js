@@ -1,3 +1,4 @@
+const { client } = require('../model/Store');
 const { User } = require('../model/Schema');
 
 const userDelete = async (ctx) => {
@@ -8,10 +9,17 @@ const userDelete = async (ctx) => {
     },
   });
   if (candidate) {
+    await client.del(ctx.cookies.get('usid'));
     await candidate.destroy();
-    ctx.message = 'user has been removed...';
+    ctx.status = 200;
+    ctx.body = {
+      message: 'user has been removed...',
+    };
   } else {
-    ctx.message = 'user not found';
+    ctx.status = 404;
+    ctx.body = {
+      message: 'user not found',
+    };
   }
 };
 

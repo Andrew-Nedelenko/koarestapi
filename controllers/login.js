@@ -18,8 +18,10 @@ const userLogin = async (ctx) => {
       const hash = crypto.createHmac('sha256', secret)
         .update('I love cupcakes')
         .digest('hex');
-      await client.setex(username, 24 * 60 * 60 * 10, hash);
-      ctx.cookies.set('SID', hash, { signed: true, maxAge: 24 * 60 * 60 * 1000, path: '/' });
+      await client.setex(username, 24 * 60 * 60, hash);
+      ctx.cookies.set('SID', hash, {
+        signed: true, maxAge: 24 * 60 * 60 * 1000, path: '/',
+      });
       ctx.cookies.set('usid', username, { signed: true, maxAge: 24 * 60 * 60 * 1000, path: '/' });
       ctx.status = 200;
     } else {
@@ -28,7 +30,7 @@ const userLogin = async (ctx) => {
     }
   } else {
     ctx.status = 404;
-    ctx.message = 'email doesnt exist';
+    ctx.message = 'wrong email';
   }
 };
 
