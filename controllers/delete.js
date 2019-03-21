@@ -9,7 +9,7 @@ const userDelete = async (ctx) => {
     },
   });
   if (candidate) {
-    await client.del(ctx.cookies.get('usid'));
+    await client.del(ctx.cookies.get('SID'));
     await candidate.destroy();
     ctx.status = 200;
     ctx.body = {

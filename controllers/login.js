@@ -18,11 +18,11 @@ const userLogin = async (ctx) => {
       const hash = crypto.createHmac('sha256', secret)
         .update('I love cupcakes')
         .digest('hex');
-      await client.setex(username, 24 * 60 * 60, hash);
+      await client.hmset(hash, 'SID', hash, 'username', username, 'userAgent', ctx.headers['user-agent']);
+      await client.expire(hash, 30 * 60);
       ctx.cookies.set('SID', hash, {
-        signed: true, maxAge: 24 * 60 * 60 * 1000, path: '/',
+        signed: true, maxAge: 24 * 60 * 60, path: '/',
       });
-      ctx.cookies.set('usid', username, { signed: true, maxAge: 24 * 60 * 60 * 1000, path: '/' });
       ctx.status = 200;
     } else {
       ctx.status = 404;

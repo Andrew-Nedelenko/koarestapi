@@ -6,8 +6,9 @@ const logout = async (ctx) => {
     ctx.status = 403;
     return 0;
   }
-  const candidate = await client.del(username);
-  if (candidate) {
+  const sId = await client.hget(ctx.cookies.get('SID'), 'username');
+  if (sId) {
+    await client.del(ctx.cookies.get('SID'));
     ctx.status = 200;
     ctx.body = {
       message: 'you are login off',
