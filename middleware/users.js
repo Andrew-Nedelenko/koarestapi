@@ -1,9 +1,10 @@
 const { client } = require('../model/Store');
+const { ReadCipher } = require('../utils/getDate');
 
 const checkToken = async (ctx, next) => {
   const token = ctx.cookies.get('SID');
   if (token) {
-    const value = await client.hget(token, 'SID');
+    const value = await client.hget(ReadCipher(token), 'SID');
     if (token === value) {
       return next();
     }

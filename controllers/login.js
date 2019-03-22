@@ -1,7 +1,8 @@
 const bcrypt = require('bcryptjs');
-const crypto = require('crypto');
+const uuid = require('uuid/v4');
 const { User } = require('../model/Schema');
 const { client } = require('../model/Store');
+const { getDateNow, CreateCipher } = require('../utils/getDate');
 
 const userLogin = async (ctx) => {
   const { username, email, password } = ctx.request.body;
@@ -14,23 +15,24 @@ const userLogin = async (ctx) => {
   if (candidate) {
     const passwordResult = bcrypt.compareSync(password, candidate.password);
     if (passwordResult) {
-      const secret = `${email}${Math.random(10)}`;
-      const hash = crypto.createHmac('sha256', secret)
-        .update('I love cupcakes')
-        .digest('hex');
-      await client.hmset(hash, 'SID', hash, 'username', username, 'userAgent', ctx.headers['user-agent']);
-      await client.expire(hash, 30 * 60);
+      const hash = CreateCipher(`${username}#${uuid()}`);
+      await client.hmset(username, 'SID', hash, 'username', username, 'email', email, 'host', ctx.headers.host, 'userAgent', ctx.headers['user-agent'], 'LoginDate', getDateNow());
+      await client.expire(username, 24 * 60 * 60 * 10);
       ctx.cookies.set('SID', hash, {
-        signed: true, maxAge: 24 * 60 * 60, path: '/',
+        signed: true, maxAge: 24 * 60 * 60 * 10, path: '/', rolling: false,
       });
       ctx.status = 200;
+      ctx.body = {
+        username,
+        email,
+      };
     } else {
       ctx.status = 404;
       ctx.message = 'password not match';
     }
   } else {
     ctx.status = 404;
-    ctx.message = 'wrong email';
+    ctx.message = 'wrong username of email';
   }
 };
 

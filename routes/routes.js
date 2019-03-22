@@ -21,4 +21,5 @@ router.post('/login', login.userLogin);
 router.put('/update/username', checkToken, up.userUpdate);
 router.delete('/del', checkToken, deleteUser.userDelete);
 
+
 module.exports = router;

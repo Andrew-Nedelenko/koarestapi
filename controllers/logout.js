@@ -1,4 +1,5 @@
 const { client } = require('../model/Store');
+const { ReadCipher } = require('../utils/getDate');
 
 const logout = async (ctx) => {
   const { username } = ctx.request.body;
@@ -6,9 +7,9 @@ const logout = async (ctx) => {
     ctx.status = 403;
     return 0;
   }
-  const sId = await client.hget(ctx.cookies.get('SID'), 'username');
+  const sId = await client.hget(ReadCipher(ctx.cookies.get('SID')), 'username');
   if (sId) {
-    await client.del(ctx.cookies.get('SID'));
+    await client.del(ReadCipher(ctx.cookies.get('SID')));
     ctx.status = 200;
     ctx.body = {
       message: 'you are login off',

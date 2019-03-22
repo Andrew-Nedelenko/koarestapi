@@ -1,5 +1,6 @@
 const { client } = require('../model/Store');
 const { User } = require('../model/Schema');
+const { ReadCipher } = require('../utils/getDate');
 
 const userDelete = async (ctx) => {
   const { email } = ctx.request.body;
@@ -9,7 +10,7 @@ const userDelete = async (ctx) => {
     },
   });
   if (candidate) {
-    await client.del(ctx.cookies.get('SID'));
+    await client.del(ReadCipher(ctx.cookies.get('SID')));
     await candidate.destroy();
     ctx.status = 200;
     ctx.body = {

@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs');
+const uuid = require('uuid/v4');
 const { User } = require('../model/Schema');
 const { client } = require('../model/Store');
+const { CreateCipher, ReadCipher, getDateNow } = require('../utils/getDate');
 
 const userUpdate = async (ctx) => {
   const { email, username, password } = ctx.request.body;
@@ -23,18 +25,19 @@ const userUpdate = async (ctx) => {
         message: 'user already exist, cant update',
       };
     } else {
-      const sesId = await client.get(candidate.username);
-      await client.setex(candidate.username, 24 * 60 * 60, sesId);
+      await client.del(ReadCipher(ctx.cookies.get('SID')), 'username');
+      const newSid = CreateCipher(`${username}#${uuid()}`);
+      await client.hmset(username, 'SID', newSid, 'username', username, 'email', email, 'host', ctx.headers.host, 'userAgent', ctx.headers['user-agent'], 'LoginDate', getDateNow());
+      await client.expire(username, 24 * 60 * 60 * 10);
       await User.update({ username },
         {
           where: {
             email,
           },
         });
-      ctx.cookies.set('SID', sesId, {
+      ctx.cookies.set('SID', newSid, {
         signed: true, maxAge: 24 * 60 * 60 * 1000, path: '/',
       });
-      ctx.cookies.set('usid', username, { signed: true, maxAge: 24 * 60 * 60 * 1000, path: '/' });
       ctx.status = 200;
       ctx.body = {
         message: 'username updated',
