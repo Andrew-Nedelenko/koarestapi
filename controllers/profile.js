@@ -12,7 +12,10 @@ const userProfile = async (ctx) => {
       },
     });
     ctx.status = 200;
-    ctx.body = candidate;
+    ctx.body = {
+      candidate,
+      test: 'test',
+    };
   } else {
     ctx.status = 403;
   }

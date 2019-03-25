@@ -17,15 +17,25 @@ const userLogin = async (ctx) => {
     if (passwordResult) {
       const hash = CreateCipher(`${username}#${uuid()}`);
       await client.hmset(username, 'SID', hash, 'username', username, 'email', email, 'host', ctx.headers.host, 'userAgent', ctx.headers['user-agent'], 'LoginDate', getDateNow());
-      await client.expire(username, 24 * 60 * 60 * 10);
+      await client.expire(username, 24 * 60 * 60);
       ctx.cookies.set('SID', hash, {
-        signed: true, maxAge: 24 * 60 * 60 * 10, path: '/', rolling: false,
+        signed: true,
+        maxAge: 24 * 60 * 60 * 1000,
+        path: '/',
+        rolling: false,
+        secure: false,
+        httpOnly: true,
+        resave: false,
+        saveUninitialized: true,
       });
+
       ctx.status = 200;
       ctx.body = {
+        login: 'login succesfuly',
         username,
         email,
       };
+      console.log(ctx);
     } else {
       ctx.status = 404;
       ctx.message = 'password not match';
