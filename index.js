@@ -26,7 +26,9 @@ app.keys = ['secret key', 'secret key'];
 app.keys = new KeyGrip(['secret key', 'secret key'], 'sha256');
 
 
-app.use(cors())
+app.use(cors({
+  credentials: true,
+}))
   .use(helmet())
   .use(bodyParser())
   .use(router.routes())
