@@ -25,7 +25,7 @@ const userLogin = async (ctx) => {
         rolling: false,
         secure: false,
         httpOnly: true,
-        resave: false,
+        resave: true,
         saveUninitialized: true,
       });
 
@@ -35,7 +35,6 @@ const userLogin = async (ctx) => {
         username,
         email,
       };
-      console.log(ctx);
     } else {
       ctx.status = 404;
       ctx.message = 'password not match';
