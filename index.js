@@ -4,6 +4,7 @@ const cors = require('@koa/cors');
 const bodyParser = require('koa-bodyparser');
 const KeyGrip = require('keygrip');
 const router = require('./routes/routes');
+const { evrt: { host, port } } = require('./utils/config');
 
 
 const app = new Koa();
@@ -35,5 +36,4 @@ app.use(cors({
   .use(router.allowedMethods());
 
 
-const port = process.env.PORT || 2800;
-module.exports = app.listen(port, '192.168.7.39');
+module.exports = app.listen(port, host);

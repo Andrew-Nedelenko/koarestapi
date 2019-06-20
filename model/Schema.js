@@ -1,22 +1,23 @@
 const Sequelize = require('sequelize');
+const {
+  evrt: {
+    dbname, dbuser, dbpass, dbhost,
+  },
+} = require('../utils/config');
 
-const sequelize = new Sequelize('oskartestdb', 'root', 'root', {
-  host: 'localhost',
+const sequelize = new Sequelize(dbname, dbuser, dbpass, {
+  host: dbhost,
   dialect: 'mysql',
   define: {
     charset: 'utf8',
     collate: 'utf8_general_ci',
   },
-  operatorsAliases: false,
-
   pool: {
     max: 5,
     min: 0,
     acquire: 30000,
     idle: 10000,
   },
-
-
 });
 
 const User = sequelize.define('oskaruserdata', {
